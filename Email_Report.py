@@ -20,8 +20,8 @@ def send_email(receiver_email, subject, body):
     it prints an error message. Finally, it quits the SMTP server.
     """
     try:
-        sender_email = "ByteSquad2024"
-        password = "kppe rvgv bdve puks"
+        sender_email = "tstark.squad"
+        password = "mzzc bjpr qijj ohxe"
         msg = MIMEMultipart()
         msg['From'] = sender_email
         msg['To'] = receiver_email

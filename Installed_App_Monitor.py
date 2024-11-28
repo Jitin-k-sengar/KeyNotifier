@@ -161,4 +161,3 @@ def Installed_App_Monitor():
             Clear_file("Temp\\Installed_app_temp.log")
 
         time.sleep(180)
-
