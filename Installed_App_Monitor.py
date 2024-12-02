@@ -150,7 +150,7 @@ def Installed_App_Monitor():
         Write_file("Temp\\Installed_app_temp.log", installed_apps)
 
         if Compare_content() == "Same":
-            pass
+            Clear_file("Temp\\Installed_app_temp.log")
         else:
             f = open("Temp\\Installed_app_temp.log", "r")
             content = f.read()

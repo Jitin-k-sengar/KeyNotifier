@@ -87,7 +87,6 @@ def Running_App_Monitor():
                 content = f.read().strip()
                 if content:
                     send_email("jitin.k.sengar@gmail.com", "Running Application Report", content)
-                    print("Email sent for existing log content")
                     Clear_file(log_file)
         except FileNotFoundError:
             pass
@@ -106,5 +105,4 @@ def Running_App_Monitor():
         with open(log_file, "r") as f:
             content = f.read()
             send_email("raunitarya599@gmail.com", "Running Application Log Report", content)
-            print("Email sent for running application log")
         Clear_file(log_file)
